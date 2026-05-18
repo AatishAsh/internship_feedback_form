@@ -11,7 +11,12 @@ const PHASES = [
 ];
 
 const Step8Document = ({ onNext, shake, isSubmitting }) => {
-  const { setValue, watch } = useFormContext();
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+    clearErrors,
+  } = useFormContext();
   const { showErrors } = useFormUI();
 
   const files = watch("finalDocuments") || [];
@@ -51,9 +56,10 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
   }, [isSubmitting]);
 
   const busy = isSubmitting || localBusy;
+  const hasFiles = files.length > 0;
 
   const handleSubmitClick = () => {
-    if (hasClickedRef.current || busy) return; // hard block
+    if (hasClickedRef.current || busy || !hasFiles) return; // hard block
     hasClickedRef.current = true;
     setLocalBusy(true);
     onNext(); // triggers handleSubmit(onSubmit) from parent
@@ -66,6 +72,7 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
       alert("You can upload up to 10 files only.");
       return;
     }
+    clearErrors("finalDocuments");
     setValue("finalDocuments", [...files, ...selectedFiles], { shouldValidate: false });
   };
 
@@ -73,6 +80,7 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
     if (busy) return;
     const updated = [...files];
     updated.splice(index, 1);
+    clearErrors("finalDocuments");
     setValue("finalDocuments", updated, { shouldValidate: false });
   };
 
@@ -175,7 +183,9 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
       {/* ── PAGE CONTENT ──────────────────────────────────── */}
       <div className="max-w-md sm:max-w-lg px-4 sm:px-6 mx-auto pt-4 pb-8">
 
-        <h1 className="text-2xl font-semibold mb-6">Upload Internship Documents</h1>
+        <h1 className="text-2xl font-semibold mb-6">
+          Upload Internship Documents <span className="text-red-400">*</span>
+        </h1>
 
         <div className={`bg-[#1a1a1a] rounded-md p-6 shadow-lg ${shake ? "shake" : ""}`}>
 
@@ -203,6 +213,11 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
               disabled={busy}
             />
           </label>
+          {showErrors && errors.finalDocuments && (
+            <p className="mt-3 text-sm text-red-400">
+              * {errors.finalDocuments.message}
+            </p>
+          )}
 
           {/* FILE LIST */}
           {files.length > 0 && (
@@ -235,10 +250,10 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
           <button
             type="button"
             onClick={handleSubmitClick}
-            disabled={busy}
+            disabled={busy || !hasFiles}
             aria-busy={busy}
             className={`w-full py-4 rounded-full text-lg font-bold transition-all duration-300 flex items-center justify-center gap-3 select-none ${
-              busy
+              busy || !hasFiles
                 ? "bg-[#1c1c1c] text-[#555] cursor-not-allowed border border-[#2a2a2a]"
                 : "bg-white text-black hover:bg-gray-100 active:scale-[0.98] shadow-md"
             }`}
@@ -258,6 +273,14 @@ const Step8Document = ({ onNext, shake, isSubmitting }) => {
           </button>
 
           {/* Helper text below button */}
+          {!hasFiles && !busy && (
+            <p
+              className="text-center text-xs text-[#888] mt-3"
+              style={{ animation: "scFadeUp 0.4s ease both" }}
+            >
+              Upload at least one document to enable submission.
+            </p>
+          )}
           {busy && (
             <p
               className="text-center text-xs text-[#444] mt-3"

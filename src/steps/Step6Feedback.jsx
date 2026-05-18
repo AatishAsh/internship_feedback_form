@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { Star } from "lucide-react";
 import { useFormUI } from "../context/FormUIContext";
@@ -7,12 +7,13 @@ const Step6Feedback = ({ onNext, shake }) => {
   const {
     register,
     setValue,
+    watch,
     formState: { errors },
     clearErrors,
   } = useFormContext();
 
   const { showErrors } = useFormUI();
-  const [environmentRating, setEnvironmentRating] = useState(0);
+  const environmentRating = watch("environment") || 0;
 
   return (
     <div className="min-h-screen bg-[#000001] text-white overflow-x-hidden">
@@ -27,7 +28,7 @@ const Step6Feedback = ({ onNext, shake }) => {
           {/* TAKEAWAY */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Biggest takeaway from this internship
+              Biggest takeaway from this internship<span className="text-red-400">*</span>
             </label>
             <textarea
               {...register("takeaway", { onChange: () => clearErrors("takeaway") })}
@@ -43,7 +44,7 @@ const Step6Feedback = ({ onNext, shake }) => {
           {/* CHALLENGES OVERCOME */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              What challenges did you face and how did you overcome them?
+              What challenges did you face and how did you overcome them? <span className="text-red-400">*</span>
             </label>
             <textarea
               {...register("challengesOvercome", { onChange: () => clearErrors("challengesOvercome") })}
@@ -51,12 +52,17 @@ const Step6Feedback = ({ onNext, shake }) => {
               rows={3}
               className="w-full p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white placeholder-gray-400 focus:outline-none"
             />
+            {showErrors && errors.challengesOvercome && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.challengesOvercome.message}
+              </p>
+            )}
           </div>
 
           {/* IMPROVEMENTS */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              What would you improve in this internship program?
+              What would you improve in this internship program?<span className="text-red-400">*</span>
             </label>
             <textarea
               {...register("improvements", { onChange: () => clearErrors("improvements") })}
@@ -69,7 +75,7 @@ const Step6Feedback = ({ onNext, shake }) => {
           {/* JOIN FUTURE */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Would you like to join us for future collaborations or jobs?
+              Would you like to join us for future collaborations or jobs?<span className="text-red-400">*</span>
             </label>
             {["Yes", "No", "Maybe"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
@@ -82,7 +88,7 @@ const Step6Feedback = ({ onNext, shake }) => {
           {/* RECOMMEND */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Would you recommend Shine Craft Technologies to others?
+              Would you recommend Shine Craft Technologies to others?<span className="text-red-400">*</span>
             </label>
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
@@ -95,7 +101,7 @@ const Step6Feedback = ({ onNext, shake }) => {
           {/* SOURCE — how they heard about SCT */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              How did you hear about Shine Craft Technologies?
+              How did you hear about Shine Craft Technologies?<span className="text-red-400">*</span>
             </label>
             {[
               "Instagram",
@@ -108,31 +114,57 @@ const Step6Feedback = ({ onNext, shake }) => {
             ].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 {/* ✅ Fixed: uses "source", NOT "postedPlatform" */}
-                <input type="checkbox" value={opt} {...register("source")} />
+                <input
+                  type="checkbox"
+                  value={opt}
+                  {...register("source", {
+                    onChange: () => clearErrors("source"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
             <input
-              {...register("otherSource")}
+              {...register("otherSource", {
+                onChange: () => clearErrors(["source", "otherSource"]),
+              })}
               placeholder="Other..."
               className="w-full mt-2 p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white placeholder-gray-400 focus:outline-none"
             />
+            {showErrors && errors.source && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.source.message}
+              </p>
+            )}
           </div>
 
           {/* POSTED PLATFORM — where they posted about SCT */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you post anything about this internship?
+              Did you post anything about this internship? <span className="text-red-400">*</span>
             </label>
             {["Instagram", "LinkedIn", "Indeed"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 {/* ✅ Fixed: uses "postedPlatform" (separate field) */}
-                <input type="checkbox" value={opt} {...register("postedPlatform")} />
+                <input
+                  type="checkbox"
+                  value={opt}
+                  {...register("postedPlatform", {
+                    onChange: () => clearErrors("postedPlatform"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.postedPlatform && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.postedPlatform.message}
+              </p>
+            )}
             <input
-              {...register("otherPostedPlatform")}
+              {...register("otherPostedPlatform", {
+                onChange: () => clearErrors(["postedPlatform", "otherPostedPlatform"]),
+              })}
               placeholder="Other..."
               className="w-full mt-2 p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white placeholder-gray-400 focus:outline-none"
             />
@@ -143,14 +175,16 @@ const Step6Feedback = ({ onNext, shake }) => {
 
           {/* ENVIRONMENT */}
           <div className="mb-4">
-            <label className="block mb-2 font-medium">How was the work environment?</label>
+            <label className="block mb-2 font-medium">
+              How was the work environment? <span className="text-red-400">*</span>
+            </label>
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
                   onClick={() => {
-                    setEnvironmentRating(star);
-                    setValue("environment", star);
+                    setValue("environment", star, { shouldValidate: true });
+                    clearErrors("environment");
                   }}
                   className={`cursor-pointer ${
                     star <= environmentRating ? "text-yellow-400" : "text-gray-500"
@@ -159,32 +193,53 @@ const Step6Feedback = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.environment && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.environment.message}
+              </p>
+            )}
           </div>
 
           {/* COMFORTABLE */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you feel comfortable asking questions?
+              Did you feel comfortable asking questions? <span className="text-red-400">*</span>
             </label>
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("comfortable")} />
+                <input
+                  type="radio"
+                  value={opt}
+                  {...register("comfortable", {
+                    onChange: () => clearErrors("comfortable"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.comfortable && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.comfortable.message}
+              </p>
+            )}
           </div>
 
           {/* TEAMWORK */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              How was teamwork and collaboration?
+              How was teamwork and collaboration? <span className="text-red-400">*</span>
             </label>
             <textarea
-              {...register("teamwork")}
+              {...register("teamwork", { onChange: () => clearErrors("teamwork") })}
               placeholder="Write your answer..."
               rows={3}
               className="w-full p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white placeholder-gray-400 focus:outline-none"
             />
+            {showErrors && errors.teamwork && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.teamwork.message}
+              </p>
+            )}
           </div>
         </div>
 

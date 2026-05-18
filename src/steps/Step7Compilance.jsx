@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useFormUI } from "../context/FormUIContext";
 import { Heart, Star } from "lucide-react";
 
 const Step7Compilance = ({ onNext, shake }) => {
-  const { register, setValue } = useFormContext();
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+    clearErrors,
+  } = useFormContext();
   const { showErrors } = useFormUI();
 
-  const [enjoyRating, setEnjoyRating]     = useState(0);
-  const [overallRating, setOverallRating] = useState(0);
+  const enjoyRating = watch("enjoyment") || 0;
+  const overallRating = watch("overallExperience") || 0;
 
   return (
     <div className="min-h-screen bg-[#000001] text-white overflow-x-hidden">
@@ -60,28 +66,35 @@ const Step7Compilance = ({ onNext, shake }) => {
           {/* GENERAL SUGGESTIONS — ✅ Fixed: was "improvements" (conflicts with Step 6) */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Any general suggestions or improvements?
+              Any general suggestions or improvements? <span className="text-red-400">*</span>
             </label>
             <textarea
-              {...register("generalSuggestions")}
+              {...register("generalSuggestions", {
+                onChange: () => clearErrors("generalSuggestions"),
+              })}
               placeholder="Share your suggestions..."
               rows={3}
               className="w-full p-3 rounded-md bg-[#0f0f0f] text-white"
             />
+            {showErrors && errors.generalSuggestions && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.generalSuggestions.message}
+              </p>
+            )}
           </div>
 
           {/* ENJOYMENT — Heart rating */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              How much did you enjoy being part of our team?
+              How much did you enjoy being part of our team? <span className="text-red-400">*</span>
             </label>
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((heart) => (
                 <Heart
                   key={heart}
                   onClick={() => {
-                    setEnjoyRating(heart);
-                    setValue("enjoyment", heart);
+                    setValue("enjoyment", heart, { shouldValidate: true });
+                    clearErrors("enjoyment");
                   }}
                   className={`cursor-pointer ${
                     heart <= enjoyRating ? "text-red-500" : "text-gray-500"
@@ -90,18 +103,25 @@ const Step7Compilance = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.enjoyment && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.enjoyment.message}
+              </p>
+            )}
           </div>
 
           {/* OVERALL RATING */}
           <div className="mb-4">
-            <label className="block mb-2 font-medium">Overall internship experience</label>
+            <label className="block mb-2 font-medium">
+              Overall internship experience <span className="text-red-400">*</span>
+            </label>
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
                   onClick={() => {
-                    setOverallRating(star);
-                    setValue("overallExperience", star);
+                    setValue("overallExperience", star, { shouldValidate: true });
+                    clearErrors("overallExperience");
                   }}
                   className={`cursor-pointer ${
                     star <= overallRating ? "text-yellow-400" : "text-gray-500"
@@ -110,28 +130,51 @@ const Step7Compilance = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.overallExperience && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.overallExperience.message}
+              </p>
+            )}
           </div>
 
           {/* LIKED MOST */}
           <div className="mb-4">
-            <label className="block mb-2 font-medium">What did you like most?</label>
+            <label className="block mb-2 font-medium">
+              What did you like most? <span className="text-red-400">*</span>
+            </label>
             <textarea
-              {...register("likedMost")}
+              {...register("likedMost", {
+                onChange: () => clearErrors("likedMost"),
+              })}
               placeholder="Write here..."
               rows={3}
               className="w-full p-3 rounded-md bg-[#0f0f0f] text-white"
             />
+            {showErrors && errors.likedMost && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.likedMost.message}
+              </p>
+            )}
           </div>
 
           {/* IMPROVE MORE */}
           <div className="mb-4">
-            <label className="block mb-2 font-medium">What can we improve?</label>
+            <label className="block mb-2 font-medium">
+              What can we improve? <span className="text-red-400">*</span>
+            </label>
             <textarea
-              {...register("improveMore")}
+              {...register("improveMore", {
+                onChange: () => clearErrors("improveMore"),
+              })}
               placeholder="Write here..."
               rows={3}
               className="w-full p-3 rounded-md bg-[#0f0f0f] text-white"
             />
+            {showErrors && errors.improveMore && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.improveMore.message}
+              </p>
+            )}
           </div>
         </div>
 

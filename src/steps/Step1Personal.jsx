@@ -323,11 +323,29 @@ const Step1Personal = ({ onNext, shake }) => {
             <label className="block mb-2 font-medium">
               Mobile Number <span className="text-red-400">*</span>
             </label>
-            <input
-              {...register("mobileNumber", { onChange: () => clearErrors("mobileNumber") })}
-              placeholder="Enter your mobile number"
-              className="w-full p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white"
-            />
+      
+     <input
+  {...register("mobileNumber", {
+    required: "Mobile number is required",
+    validate: {
+      onlyNumbers: (value) =>
+        /^\d+$/.test(value) || "Only numbers are allowed",
+      validLength: (value) =>
+        value.length === 10 || "Mobile number must be 10 digits",
+      validStart: (value) =>
+        /^[6-9]/.test(value) || "Must start with 6, 7, 8, or 9",
+    },
+    onChange: (e) => {
+      // 🚀 THIS is the real fix
+      const cleaned = e.target.value.replace(/[^0-9]/g, "");
+      setValue("mobileNumber", cleaned);
+      clearErrors("mobileNumber");
+    },
+  })}
+
+  placeholder="Enter your mobile number"
+  className="w-full p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white"
+/>
             {showErrors && errors.mobileNumber && (
               <p className="text-sm text-red-400">* {errors.mobileNumber.message}</p>
             )}
@@ -420,3 +438,4 @@ const Step1Personal = ({ onNext, shake }) => {
 };
 
 export default Step1Personal;
+

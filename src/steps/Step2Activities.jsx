@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useFormUI } from "../context/FormUIContext";
 import { Star } from "lucide-react";
@@ -6,13 +6,23 @@ import { Star } from "lucide-react";
 const Step2Activities = ({ onNext, shake }) => {
   const {
     register,
+    watch,
     formState: { errors },
     clearErrors,
     setValue,
   } = useFormContext();
 
   const { showErrors } = useFormUI();
-  const [rating, setRating] = useState(0);
+  const technologies = watch("technologies") || [];
+  const otherTech = watch("otherTech") || "";
+  const rating = watch("rating") || 0;
+  const hasTechnologies =
+    (Array.isArray(technologies) && technologies.length > 0) ||
+    otherTech.trim().length > 0;
+
+  useEffect(() => {
+    register("rating");
+  }, [register]);
 
   return (
     <div className="min-h-screen bg-[#000001] text-white overflow-x-hidden">
@@ -66,6 +76,12 @@ const Step2Activities = ({ onNext, shake }) => {
               rows={4}
               className="w-full p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white"
             />
+
+            {showErrors && errors.roles && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.roles.message}
+              </p>
+            )}
           </div>
 
           {/* TECHNOLOGIES */}
@@ -96,16 +112,28 @@ const Step2Activities = ({ onNext, shake }) => {
                   <input
                     type="checkbox"
                     value={tech}
-                    {...register("technologies")}
+                    {...register("technologies", {
+                      onChange: () => clearErrors("technologies"),
+                    })}
                   />
                   {tech}
                 </label>
               ))}
             </div>
 
+            {showErrors && errors.technologies && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.technologies.message}
+              </p>
+            )}
+
             {/* OTHER */}
             <input
-              {...register("otherTech")}
+              {...register("otherTech", {
+                onChange: () => {
+                  clearErrors(["technologies", "otherTech"]);
+                },
+              })}
               placeholder="Other"
               className="mt-3 w-full p-3 rounded-md bg-[#0f0f0f] text-white"
             />
@@ -123,7 +151,9 @@ const Step2Activities = ({ onNext, shake }) => {
                 <input
                   type="radio"
                   value="Yes"
-                  {...register("support")}
+                  {...register("support", {
+                    onChange: () => clearErrors("support"),
+                  })}
                 />
                 Yes
               </label>
@@ -132,11 +162,19 @@ const Step2Activities = ({ onNext, shake }) => {
                 <input
                   type="radio"
                   value="No"
-                  {...register("support")}
+                  {...register("support", {
+                    onChange: () => clearErrors("support"),
+                  })}
                 />
                 No
               </label>
             </div>
+
+            {showErrors && errors.support && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.support.message}
+              </p>
+            )}
           </div>
 
           {/* STAR RATING */}
@@ -151,8 +189,8 @@ const Step2Activities = ({ onNext, shake }) => {
                 <Star
                   key={star}
                   onClick={() => {
-                    setRating(star);
-                    setValue("rating", star);
+                    setValue("rating", star, { shouldValidate: true });
+                    clearErrors("rating");
                   }}
                   className={`cursor-pointer ${
                     star <= rating ? "text-yellow-400" : "text-gray-500"
@@ -161,6 +199,11 @@ const Step2Activities = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.rating && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.rating.message}
+              </p>
+            )}
           </div>
         </div>
 
@@ -169,10 +212,20 @@ const Step2Activities = ({ onNext, shake }) => {
           <button
             type="button"
             onClick={onNext}
-            className="w-full py-4 rounded-full bg-white text-black text-lg font-bold hover:bg-gray-200 transition-colors duration-200"
+            disabled={!hasTechnologies}
+            className={`w-full py-4 rounded-full text-black text-lg font-bold transition-colors duration-200 ${
+              !hasTechnologies
+                ? "bg-[#1c1c1c] text-[#555] cursor-not-allowed"
+                : "bg-white hover:bg-gray-200"
+            }`}
           >
             Next
           </button>
+          {!hasTechnologies && (
+            <p className="mt-2 text-sm text-[#ccc]">
+              Select at least one technology/tool or enter Other to continue.
+            </p>
+          )}
         </div>
       </div>
     </div>

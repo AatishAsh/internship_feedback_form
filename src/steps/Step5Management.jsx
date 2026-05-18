@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useFormUI } from "../context/FormUIContext";
 import { Star } from "lucide-react";
@@ -14,13 +14,15 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
     register,
     setValue,
     watch,
+    formState: { errors },
+    clearErrors,
   } = useFormContext();
 
   const { showErrors } = useFormUI();
 
-  const [structureRating, setStructureRating] = useState(0);
-  const [taskRating, setTaskRating] = useState(0);
-  const [openTerms, setOpenTerms] = useState(false);
+  const structureRating = watch("internshipStructure") || 0;
+  const taskRating = watch("taskMeaningful") || 0;
+  const [openTerms, setOpenTerms] = React.useState(false);
 
   const isDeclared = watch("declaration");
 
@@ -38,7 +40,7 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
           {/* STRUCTURE RATING */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              How well-structured was the internship program?
+              How well-structured was the internship program? <span className="text-red-400">*</span>
             </label>
 
             <div className="flex gap-2">
@@ -46,8 +48,8 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
                 <Star
                   key={star}
                   onClick={() => {
-                    setStructureRating(star);
-                    setValue("internshipStructure", star);
+                    setValue("internshipStructure", star, { shouldValidate: true });
+                    clearErrors("internshipStructure");
                   }}
                   className={`cursor-pointer ${
                     star <= structureRating ? "text-yellow-400" : "text-gray-500"
@@ -56,12 +58,17 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.internshipStructure && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.internshipStructure.message}
+              </p>
+            )}
           </div>
 
           {/* DEADLINES */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you meet deadlines and expectations for tasks?
+              Did you meet deadlines and expectations for tasks? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No", "Partially"].map((opt) => (
@@ -75,7 +82,7 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
           {/* GOALS */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Were the project goals clearly defined?
+              Were the project goals clearly defined? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No", "Somewhat"].map((opt) => (
@@ -89,7 +96,7 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
           {/* GITHUB */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you maintain Github and Documentation as required?
+              Did you maintain Github and Documentation as required? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No"].map((opt) => (
@@ -108,7 +115,7 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
           {/* TASK CLEAR */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Were tasks clearly explained?
+              Were tasks clearly explained? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No"].map((opt) => (
@@ -122,7 +129,7 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
           {/* TASK MEANINGFUL */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Were tasks meaningful?
+              Were tasks meaningful? <span className="text-red-400">*</span>
             </label>
 
             <div className="flex gap-2">
@@ -130,8 +137,8 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
                 <Star
                   key={star}
                   onClick={() => {
-                    setTaskRating(star);
-                    setValue("taskMeaningful", star);
+                    setValue("taskMeaningful", star, { shouldValidate: true });
+                    clearErrors("taskMeaningful");
                   }}
                   className={`cursor-pointer ${
                     star <= taskRating ? "text-yellow-400" : "text-gray-500"
@@ -140,12 +147,17 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.taskMeaningful && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.taskMeaningful.message}
+              </p>
+            )}
           </div>
 
           {/* CHALLENGES */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you face any challenges?
+              Did you face any challenges? <span className="text-red-400">*</span>
             </label>
 
             <textarea
