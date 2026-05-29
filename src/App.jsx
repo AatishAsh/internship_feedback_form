@@ -24,8 +24,8 @@ import { Toaster } from "./components/ui/toaster";
 const stepFields = {
   1: [
     "fullName",
-    "mobile",
-    "college",
+    "mobileNumber",
+    "collegeName",
     "department",
     "startDate",
     "endDate",
@@ -35,25 +35,30 @@ const stepFields = {
   2: [
     "projects",
     "roles",
-    "tools",
-    "resources",
-    "techRating",
+    "technologies",
+    "support",
+    "rating",
   ],
 
   3: [
-    "mentorAvailability",
+    "mentorAccessibility",
     "feedback",
     "mentorRating",
     "communicationRating",
+    "responseTime",
+    "supportRating",
+    "regularFeedback",
+    "doubtResolution",
   ],
 
   4: [
     "ideaCommunication",
     "teamFeeling",
-    "coordination",
-    "learning",
+    "teamCoordination",
+    "practicalKnowledge",
+    "learningRating",
     "skills",
-    "careerAlign",
+    "careerAlignment",
   ],
 
   5: [
@@ -68,24 +73,30 @@ const stepFields = {
 
   6: [
     "takeaway",
-    "challengeSolution",
+    "challengesOvercome",
     "improvements",
-    "futureInterest",
+    "joinFuture",
     "recommend",
     "source",
-    "workEnv",
+    "postedPlatform",
+    "environment",
+    "comfortable",
+    "teamwork",
   ],
 
   7: [
     "handover",
     "knowledgeShare",
     "certificate",
-    "suggestions",
-    "overallRating",
+    "generalSuggestions",
+    "enjoyment",
+    "overallExperience",
+    "likedMost",
+    "improveMore",
   ],
 
   8: [
-    "documentsUpload"
+    "finalDocuments"
   ]
 };
 

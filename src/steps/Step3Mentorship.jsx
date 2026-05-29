@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useFormUI } from "../context/FormUIContext";
 import { Star } from "lucide-react";
@@ -6,6 +6,7 @@ import { Star } from "lucide-react";
 const Step3Mentorship = ({ onNext, shake }) => {
   const {
     register,
+    watch,
     formState: { errors },
     clearErrors,
     setValue,
@@ -13,9 +14,9 @@ const Step3Mentorship = ({ onNext, shake }) => {
 
   const { showErrors } = useFormUI();
 
-  const [mentorRating, setMentorRating] = useState(0);
-  const [communicationRating, setCommunicationRating] = useState(0);
-  const [supportRating, setSupportRating] = useState(0);
+  const mentorRating = watch("mentorRating") || 0;
+  const communicationRating = watch("communicationRating") || 0;
+  const supportRating = watch("supportRating") || 0;
 
   return (
     <div className="min-h-screen bg-[#000001] text-white overflow-x-hidden">
@@ -34,7 +35,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
           {/* MENTOR ACCESS */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Was your mentor accessible and helpful?
+              Was your mentor accessible and helpful? <span className="text-red-400">*</span>
             </label>
 
             {["Always", "Usually", "Occasionally", "Rarely"].map((opt) => (
@@ -42,17 +43,25 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 <input
                   type="radio"
                   value={opt}
-                  {...register("mentorAccessibility")}
+                  {...register("mentorAccessibility", {
+                    onChange: () => clearErrors("mentorAccessibility"),
+                  })}
                 />
                 {opt}
               </label>
             ))}
+
+            {showErrors && errors.mentorAccessibility && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.mentorAccessibility.message}
+              </p>
+            )}
           </div>
 
           {/* FEEDBACK */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you receive constructive feedback on your work?
+              Did you receive constructive feedback on your work? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No"].map((opt) => (
@@ -66,7 +75,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
           {/* MENTOR RATING */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Rate your mentor's guidance throughout the internship
+              Rate your mentor's guidance throughout the internship <span className="text-red-400">*</span>
             </label>
 
             <div className="flex gap-2">
@@ -74,8 +83,8 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 <Star
                   key={star}
                   onClick={() => {
-                    setMentorRating(star);
-                    setValue("mentorRating", star);
+                    setValue("mentorRating", star, { shouldValidate: true });
+                    clearErrors("mentorRating");
                   }}
                   className={`cursor-pointer ${
                     star <= mentorRating ? "text-yellow-400" : "text-gray-500"
@@ -84,6 +93,11 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.mentorRating && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.mentorRating.message}
+              </p>
+            )}
           </div>
 
           {/* COMMUNICATION */}
@@ -93,7 +107,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
 
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              How would you rate communication from our team?
+              How would you rate communication from our team? <span className="text-red-400">*</span>
             </label>
 
             <div className="flex gap-2">
@@ -101,8 +115,8 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 <Star
                   key={star}
                   onClick={() => {
-                    setCommunicationRating(star);
-                    setValue("communicationRating", star);
+                    setValue("communicationRating", star, { shouldValidate: true });
+                    clearErrors("communicationRating");
                   }}
                   className={`cursor-pointer ${
                     star <= communicationRating
@@ -113,11 +127,16 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.communicationRating && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.communicationRating.message}
+              </p>
+            )}
           </div>
 
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Were responses timely?
+              Were responses timely? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No", "Sometimes"].map((opt) => (
@@ -125,11 +144,19 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 <input
                   type="radio"
                   value={opt}
-                  {...register("responseTime")}
+                  {...register("responseTime", {
+                    onChange: () => clearErrors("responseTime"),
+                  })}
                 />
                 {opt}
               </label>
             ))}
+
+            {showErrors && errors.responseTime && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.responseTime.message}
+              </p>
+            )}
           </div>
 
           {/* SUPPORT */}
@@ -139,7 +166,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
 
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              How supportive was your mentor?
+              How supportive was your mentor? <span className="text-red-400">*</span>
             </label>
 
             <div className="flex gap-2">
@@ -147,8 +174,8 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 <Star
                   key={star}
                   onClick={() => {
-                    setSupportRating(star);
-                    setValue("supportRating", star);
+                    setValue("supportRating", star, { shouldValidate: true });
+                    clearErrors("supportRating");
                   }}
                   className={`cursor-pointer ${
                     star <= supportRating ? "text-yellow-400" : "text-gray-500"
@@ -157,11 +184,16 @@ const Step3Mentorship = ({ onNext, shake }) => {
                 />
               ))}
             </div>
+            {showErrors && errors.supportRating && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.supportRating.message}
+              </p>
+            )}
           </div>
 
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did your mentor provide regular feedback?
+              Did your mentor provide regular feedback? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No"].map((opt) => (
@@ -178,7 +210,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
 
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Were your doubts resolved properly?
+              Were your doubts resolved properly? <span className="text-red-400">*</span>
             </label>
 
             {["Yes", "No", "Sometimes"].map((opt) => (

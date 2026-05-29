@@ -62,8 +62,17 @@ export default yup.object({
 
   technologies: yup // Checkbox array
     .array()
-    .min(1, "Select at least one technology")
-    .required("Select at least one technology"),
+    .test(
+      "technologies-or-other",
+      "Select at least one technology or enter Other",
+      function (value) {
+        const otherTech = this.parent.otherTech || "";
+        return (
+          (Array.isArray(value) && value.length > 0) ||
+          otherTech.trim().length > 0
+        );
+      }
+    ),
 
   otherTech: yup.string().optional(), // Optional text input
 
@@ -168,11 +177,35 @@ export default yup.object({
   
   recommend: yup.string().oneOf(["Yes", "No"]).required("Please select an option"),
 
-  source: yup.array().min(1, "Select at least one source").required("Select a source"),
+  source: yup
+    .array()
+    .test(
+      "source-or-other",
+      "Select at least one source or enter Other",
+      function (value) {
+        const otherSource = this.parent.otherSource || "";
+        return (
+          (Array.isArray(value) && value.length > 0) ||
+          otherSource.trim().length > 0
+        );
+      }
+    ),
   otherSource: yup.string().optional(),
 
   // These are the renamed fields from the bug fix we discussed
-  postedPlatform: yup.array().optional(), 
+  postedPlatform: yup
+    .array()
+    .test(
+      "postedPlatform-or-other",
+      "Select at least one platform or enter Other",
+      function (value) {
+        const otherPostedPlatform = this.parent.otherPostedPlatform || "";
+        return (
+          (Array.isArray(value) && value.length > 0) ||
+          otherPostedPlatform.trim().length > 0
+        );
+      }
+    ),
   otherPostedPlatform: yup.string().optional(),
 
   environment: yup.number().min(1).max(5).required("Environment rating is required"),
@@ -194,8 +227,9 @@ export default yup.object({
 
   generalSuggestions: yup // Fixed name to avoid conflict with Step 6 'improvements'
     .string()
-    .nullable()
-    .optional(),
+    .required("Please provide your suggestions")
+    .trim()
+    .min(5, "Write at least 5 characters"),
 
   enjoyment: yup.number().min(1).max(5).required("Enjoyment rating is required"),
   
@@ -210,7 +244,7 @@ export default yup.object({
   finalDocuments: yup // Matched your JSX
     .mixed()
     .test("fileLength", "Upload at least one file", (value) => {
-      return value && value.length > 0;
+      return Array.isArray(value) && value.length > 0;
     })
     .test("fileMax", "Max 10 files allowed", (value) => {
       return !value || value.length <= 10;

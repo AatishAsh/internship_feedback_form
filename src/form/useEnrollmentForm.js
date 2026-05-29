@@ -11,7 +11,7 @@ const useEnrollmentForm = (setStep) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const methods = useForm({
-    //resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     defaultValues: {
