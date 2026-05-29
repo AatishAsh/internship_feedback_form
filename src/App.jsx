@@ -12,6 +12,7 @@ import Step5Management from "./steps/Step5Management";
 import Step6Feedback from "./steps/Step6Feedback";
 import Step7Compilance from "./steps/Step7Compilance";
 import Step8Document from "./steps/Step8Document";
+import Step9TC from "./steps/Step9TC";
 
 import SuccessCompletion from "./steps/SuccessCompletion";
 
@@ -103,6 +104,10 @@ const stepFields = {
 
   8: [
     "finalDocuments"
+  ],
+
+  9: [
+    "agreedToTerms"
   ]
 };
 
@@ -128,8 +133,8 @@ function App() {
 
     form.setShowErrors(false);
 
-    // ✅ FINAL SUBMIT AFTER PAGE 8
-    if (step === 8) {
+    // ✅ FINAL SUBMIT AFTER PAGE 9
+    if (step === 9) {
       await form.onSubmit(form.getValues());
     } else {
       setStep(step + 1);
@@ -141,13 +146,13 @@ function App() {
       <FormUIContext.Provider value={{ showErrors: form.showErrors }}>
         <FormProvider {...form}>
 
-          {/* ✅ TOP BAR (NOW UPTO STEP 8) */}
-          {step > 1 && step < 9 && (
+          {/* ✅ TOP BAR (NOW UPTO STEP 9) */}
+          {step > 1 && step < 10 && (
             <TopBar onBack={() => setStep(step - 1)} />
           )}
 
-          {/* ✅ PROGRESS BAR (NOW UPTO STEP 8) */}
-          {step > 1 && step < 9 && (
+          {/* ✅ PROGRESS BAR (NOW UPTO STEP 9) */}
+          {step > 1 && step < 10 && (
             <ProgressBar currentStep={step} setStep={setStep} />
           )}
 
@@ -195,8 +200,17 @@ function App() {
               <Step8Document onNext={nextStep} shake={shakeForm} />
             )}
 
+            {/* ✅ T&C PAGE */}
+            {step === 9 && (
+              <Step9TC
+                onNext={nextStep}
+                shake={shakeForm}
+                isSubmitting={form.isSubmitting}
+              />
+            )}
+
             {/* SUCCESS PAGE */}
-            {step === 9 && <SuccessCompletion />}
+            {step === 10 && <SuccessCompletion />}
 
           </form>
         </FormProvider>

@@ -285,5 +285,11 @@ export default yup.object({
       // Convert FileList/Array to standard Array
       const filesArray = Array.from(value); 
       return filesArray.every((file) => file.size <= 100 * 1024 * 1024);
-    })
+    }),
+
+  // ================= STEP 9: Terms & Conditions =================
+  agreedToTerms: yup
+    .boolean()
+    .oneOf([true], "You must agree to the terms and conditions to submit")
+    .required("You must agree to the terms and conditions to submit"),
 });
