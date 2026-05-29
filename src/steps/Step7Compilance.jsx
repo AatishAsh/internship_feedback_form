@@ -183,26 +183,6 @@ const Step7Compilance = ({ onNext, shake }) => {
               </p>
             )}
           </div>
-
-          {/* IMPROVE MORE */}
-          <div className="mb-4">
-            <label className="block mb-2 font-medium">
-              What can we improve? <span className="text-red-400">*</span>
-            </label>
-            <textarea
-              {...register("improveMore", {
-                onChange: () => clearErrors("improveMore"),
-              })}
-              placeholder="Write here..."
-              rows={3}
-              className="w-full p-3 rounded-md bg-[#0f0f0f] text-white"
-            />
-            {showErrors && errors.improveMore && (
-              <p className="mt-1 text-sm text-red-400">
-                * {errors.improveMore.message}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* NEXT */}

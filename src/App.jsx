@@ -99,7 +99,6 @@ const stepFields = {
     "enjoyment",
     "overallExperience",
     "likedMost",
-    "improveMore",
   ],
 
   8: [

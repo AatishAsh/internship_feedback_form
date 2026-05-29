@@ -267,8 +267,6 @@ export default yup.object({
   overallExperience: yup.number().min(1).max(5).required("Overall experience rating is required"),
 
   likedMost: yup.string().required("Please tell us what you liked most").trim(),
-  
-  improveMore: yup.string().required("Please tell us what we can improve").trim(),
 
 
   // ================= STEP 8: Documents =================
