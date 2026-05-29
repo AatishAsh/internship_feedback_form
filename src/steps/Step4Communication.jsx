@@ -38,7 +38,7 @@ const Step4Communication = ({ onNext, shake }) => {
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("ideaCommunication", {
                     onChange: () => clearErrors("ideaCommunication"),
@@ -64,7 +64,7 @@ const Step4Communication = ({ onNext, shake }) => {
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("teamFeeling", {
                     onChange: () => clearErrors("teamFeeling"),
@@ -122,7 +122,7 @@ const Step4Communication = ({ onNext, shake }) => {
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("practicalKnowledge", {
                     onChange: () => clearErrors("practicalKnowledge"),
@@ -135,6 +135,32 @@ const Step4Communication = ({ onNext, shake }) => {
             {showErrors && errors.practicalKnowledge && (
               <p className="mt-1 text-sm text-red-400">
                 * {errors.practicalKnowledge.message}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 font-medium">
+              Did this internship improve your practical industry understanding? <span className="text-red-400">*</span>
+            </label>
+
+            {["Yes significantly", "Somewhat", "Minimal", "No"].map((opt) => (
+              <label key={opt} className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  className="accent-white"
+                  value={opt}
+                  {...register("industryUnderstanding", {
+                    onChange: () => clearErrors("industryUnderstanding"),
+                  })}
+                />
+                {opt}
+              </label>
+            ))}
+
+            {showErrors && errors.industryUnderstanding && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.industryUnderstanding.message}
               </p>
             )}
           </div>
@@ -179,7 +205,7 @@ const Step4Communication = ({ onNext, shake }) => {
             {["Technical", "Communication", "Teamwork"].map((skill) => (
               <label key={skill} className="flex items-center gap-2">
                 <input
-                  type="checkbox"
+                  type="checkbox" className="accent-white"
                   value={skill}
                   {...register("skills", {
                     onChange: () => clearErrors("skills"),
@@ -196,6 +222,42 @@ const Step4Communication = ({ onNext, shake }) => {
             )}
           </div>
 
+          <div className="mb-4">
+            <label className="block mb-2 font-medium">
+              Did the internship help improve: <span className="text-red-400">*</span>
+            </label>
+
+            <div className="flex flex-col gap-2">
+              {[
+                "Git/GitHub usage",
+                "Documentation skills",
+                "Team collaboration",
+                "Problem solving",
+                "Communication",
+                "Real-world development workflow",
+                "Reporting discipline",
+              ].map((area) => (
+                <label key={area} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    className="accent-white"
+                    value={area}
+                    {...register("growthAreas", {
+                      onChange: () => clearErrors("growthAreas"),
+                    })}
+                  />
+                  {area}
+                </label>
+              ))}
+            </div>
+
+            {showErrors && errors.growthAreas && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.growthAreas.message}
+              </p>
+            )}
+          </div>
+
           {/* CAREER ALIGNMENT */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
@@ -205,7 +267,7 @@ const Step4Communication = ({ onNext, shake }) => {
             {["Yes", "No", "Partially"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("careerAlignment", {
                     onChange: () => clearErrors("careerAlignment"),

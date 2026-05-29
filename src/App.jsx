@@ -30,6 +30,7 @@ const stepFields = {
     "startDate",
     "endDate",
     "mode",
+    "internshipLevel",
   ],
 
   2: [
@@ -38,6 +39,7 @@ const stepFields = {
     "technologies",
     "support",
     "rating",
+    "attendanceConsistency",
   ],
 
   3: [
@@ -56,8 +58,10 @@ const stepFields = {
     "teamFeeling",
     "teamCoordination",
     "practicalKnowledge",
+    "industryUnderstanding",
     "learningRating",
     "skills",
+    "growthAreas",
     "careerAlignment",
   ],
 
@@ -67,6 +71,7 @@ const stepFields = {
     "projectGoals",
     "github",
     "taskClarity",
+    "taskDifficulty",
     "taskMeaningful",
     "challenges",
   ],
@@ -74,6 +79,7 @@ const stepFields = {
   6: [
     "takeaway",
     "challengesOvercome",
+    "improvementAreas",
     "improvements",
     "joinFuture",
     "recommend",
@@ -147,7 +153,10 @@ function App() {
 
           <BackgroundFileUploader currentStep={step} />
 
-          <form onSubmit={form.handleSubmit(form.onSubmit)}>
+          <form
+            onSubmit={form.handleSubmit(form.onSubmit)}
+            onPaste={(e) => e.preventDefault()}
+          >
 
             {step === 1 && (
               <Step1Personal onNext={nextStep} shake={shakeForm} />

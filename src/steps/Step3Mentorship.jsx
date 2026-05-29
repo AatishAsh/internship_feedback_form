@@ -41,7 +41,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
             {["Always", "Usually", "Occasionally", "Rarely"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("mentorAccessibility", {
                     onChange: () => clearErrors("mentorAccessibility"),
@@ -66,10 +66,19 @@ const Step3Mentorship = ({ onNext, shake }) => {
 
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("feedback")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("feedback", {
+                    onChange: () => clearErrors("feedback"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.feedback && (
+              <p className="mt-1 text-sm text-red-400">* {errors.feedback.message}</p>
+            )}
           </div>
 
           {/* MENTOR RATING */}
@@ -142,7 +151,7 @@ const Step3Mentorship = ({ onNext, shake }) => {
             {["Yes", "No", "Sometimes"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("responseTime", {
                     onChange: () => clearErrors("responseTime"),
@@ -199,13 +208,18 @@ const Step3Mentorship = ({ onNext, shake }) => {
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
-                  {...register("regularFeedback")}
+                  {...register("regularFeedback", {
+                    onChange: () => clearErrors("regularFeedback"),
+                  })}
                 />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.regularFeedback && (
+              <p className="mt-1 text-sm text-red-400">* {errors.regularFeedback.message}</p>
+            )}
           </div>
 
           <div className="mb-4">
@@ -216,13 +230,18 @@ const Step3Mentorship = ({ onNext, shake }) => {
             {["Yes", "No", "Sometimes"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
-                  {...register("doubtResolution")}
+                  {...register("doubtResolution", {
+                    onChange: () => clearErrors("doubtResolution"),
+                  })}
                 />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.doubtResolution && (
+              <p className="mt-1 text-sm text-red-400">* {errors.doubtResolution.message}</p>
+            )}
           </div>
         </div>
 

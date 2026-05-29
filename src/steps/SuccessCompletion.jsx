@@ -10,7 +10,7 @@ const SuccessCompletion = () => {
 
       {/* SUCCESS CONTENT */}
       <div className="flex flex-col items-center justify-center px-6 py-12">
-        <div className="bg-[#1f2937] p-8 rounded-2xl shadow-xl text-center max-w-md w-full">
+        <div className="bg-[#1a1a1a] p-8 rounded-2xl shadow-xl text-center max-w-md w-full">
           <h1 className="text-4xl sm:text-5xl font-normal font-stylefont mb-5">
            Thank you for working with us!
           </h1>

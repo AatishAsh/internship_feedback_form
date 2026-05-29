@@ -73,10 +73,19 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
 
             {["Yes", "No", "Partially"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("deadlines")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("deadlines", {
+                    onChange: () => clearErrors("deadlines"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.deadlines && (
+              <p className="mt-1 text-sm text-red-400">* {errors.deadlines.message}</p>
+            )}
           </div>
 
           {/* GOALS */}
@@ -87,10 +96,19 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
 
             {["Yes", "No", "Somewhat"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("projectGoals")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("projectGoals", {
+                    onChange: () => clearErrors("projectGoals"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.projectGoals && (
+              <p className="mt-1 text-sm text-red-400">* {errors.projectGoals.message}</p>
+            )}
           </div>
 
           {/* GITHUB */}
@@ -101,10 +119,19 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
 
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("github")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("github", {
+                    onChange: () => clearErrors("github"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.github && (
+              <p className="mt-1 text-sm text-red-400">* {errors.github.message}</p>
+            )}
           </div>
 
           {/* TASK EXPERIENCE */}
@@ -120,10 +147,44 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
 
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("taskClarity")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("taskClarity", {
+                    onChange: () => clearErrors("taskClarity"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.taskClarity && (
+              <p className="mt-1 text-sm text-red-400">* {errors.taskClarity.message}</p>
+            )}
+          </div>
+
+          {/* TASK DIFFICULTY */}
+          <div className="mb-4">
+            <label className="block mb-2 font-medium">
+              How would you rate the difficulty level of assigned tasks? <span className="text-red-400">*</span>
+            </label>
+            <div className="flex flex-col gap-2">
+              {["Beginner Friendly", "Moderate", "Challenging", "Very Advanced"].map((opt) => (
+                <label key={opt} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    className="accent-white"
+                    value={opt}
+                    {...register("taskDifficulty", {
+                      onChange: () => clearErrors("taskDifficulty"),
+                    })}
+                  />
+                  {opt}
+                </label>
+              ))}
+            </div>
+            {showErrors && errors.taskDifficulty && (
+              <p className="mt-1 text-sm text-red-400">* {errors.taskDifficulty.message}</p>
+            )}
           </div>
 
           {/* TASK MEANINGFUL */}
@@ -161,11 +222,16 @@ const Step5Management = ({ onNext, shake, isSubmitting }) => {
             </label>
 
             <textarea
-              {...register("challenges")}
+              {...register("challenges", {
+                onChange: () => clearErrors("challenges"),
+              })}
               placeholder="Write your answer..."
               rows={3}
               className="w-full p-3 rounded-md bg-[#0f0f0f] text-white"
             />
+            {showErrors && errors.challenges && (
+              <p className="mt-1 text-sm text-red-400">* {errors.challenges.message}</p>
+            )}
           </div>
 
         </div>

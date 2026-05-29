@@ -62,11 +62,44 @@ const Step6Feedback = ({ onNext, shake }) => {
           {/* IMPROVEMENTS */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              What would you improve in this internship program?<span className="text-red-400">*</span>
+              Which areas of the internship program can be improved?<span className="text-red-400">*</span>
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+              {[
+                "Communication",
+                "Task clarity",
+                "Mentorship",
+                "Technical guidance",
+                "Time management",
+                "Reporting process",
+                "Work allocation",
+                "Learning resources",
+                "Meeting structure",
+                "Other",
+              ].map((area) => (
+                <label key={area} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    className="accent-white"
+                    value={area}
+                    {...register("improvementAreas", {
+                      onChange: () => clearErrors("improvementAreas"),
+                    })}
+                  />
+                  {area}
+                </label>
+              ))}
+            </div>
+            {showErrors && errors.improvementAreas && (
+              <p className="mt-1 text-sm text-red-400">* {errors.improvementAreas.message}</p>
+            )}
+
+            <label className="block mt-4 mb-2 font-medium">
+              Additional Details (Optional)
             </label>
             <textarea
               {...register("improvements", { onChange: () => clearErrors("improvements") })}
-              placeholder="Write your answer..."
+              placeholder="Share more details about requested improvements..."
               rows={3}
               className="w-full p-3 sm:p-4 rounded-md bg-[#0f0f0f] text-white placeholder-gray-400 focus:outline-none"
             />
@@ -79,10 +112,19 @@ const Step6Feedback = ({ onNext, shake }) => {
             </label>
             {["Yes", "No", "Maybe"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("joinFuture")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("joinFuture", {
+                    onChange: () => clearErrors("joinFuture"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.joinFuture && (
+              <p className="mt-1 text-sm text-red-400">* {errors.joinFuture.message}</p>
+            )}
           </div>
 
           {/* RECOMMEND */}
@@ -92,10 +134,19 @@ const Step6Feedback = ({ onNext, shake }) => {
             </label>
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("recommend")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("recommend", {
+                    onChange: () => clearErrors("recommend"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.recommend && (
+              <p className="mt-1 text-sm text-red-400">* {errors.recommend.message}</p>
+            )}
           </div>
 
           {/* SOURCE — how they heard about SCT */}
@@ -115,7 +166,7 @@ const Step6Feedback = ({ onNext, shake }) => {
               <label key={opt} className="flex items-center gap-2">
                 {/* ✅ Fixed: uses "source", NOT "postedPlatform" */}
                 <input
-                  type="checkbox"
+                  type="checkbox" className="accent-white"
                   value={opt}
                   {...register("source", {
                     onChange: () => clearErrors("source"),
@@ -147,7 +198,7 @@ const Step6Feedback = ({ onNext, shake }) => {
               <label key={opt} className="flex items-center gap-2">
                 {/* ✅ Fixed: uses "postedPlatform" (separate field) */}
                 <input
-                  type="checkbox"
+                  type="checkbox" className="accent-white"
                   value={opt}
                   {...register("postedPlatform", {
                     onChange: () => clearErrors("postedPlatform"),
@@ -208,7 +259,7 @@ const Step6Feedback = ({ onNext, shake }) => {
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value={opt}
                   {...register("comfortable", {
                     onChange: () => clearErrors("comfortable"),

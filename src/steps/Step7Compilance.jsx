@@ -27,40 +27,67 @@ const Step7Compilance = ({ onNext, shake }) => {
           {/* DOCUMENT HANDOVER */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Did you hand over all required documents and login credentials?
+              Did you hand over all required documents and login credentials? <span className="text-red-400">*</span>
             </label>
             {["Yes", "No", "Not Yet"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("handover")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("handover", {
+                    onChange: () => clearErrors("handover"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.handover && (
+              <p className="mt-1 text-sm text-red-400">* {errors.handover.message}</p>
+            )}
           </div>
 
           {/* KNOWLEDGE SHARE */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Do you agree to share the knowledge gained with future team members?
+              Do you agree to share the knowledge gained with future team members? <span className="text-red-400">*</span>
             </label>
             {["Yes", "No"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("knowledgeShare")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("knowledgeShare", {
+                    onChange: () => clearErrors("knowledgeShare"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.knowledgeShare && (
+              <p className="mt-1 text-sm text-red-400">* {errors.knowledgeShare.message}</p>
+            )}
           </div>
 
           {/* CERTIFICATE */}
           <div className="mb-4">
             <label className="block mb-2 font-medium">
-              Do you need a recommendation letter or certificate?
+              Do you need a recommendation letter or certificate? <span className="text-red-400">*</span>
             </label>
             {["Yes", "No", "Both"].map((opt) => (
               <label key={opt} className="flex items-center gap-2">
-                <input type="radio" value={opt} {...register("certificate")} />
+                <input
+                  type="radio" className="accent-white"
+                  value={opt}
+                  {...register("certificate", {
+                    onChange: () => clearErrors("certificate"),
+                  })}
+                />
                 {opt}
               </label>
             ))}
+            {showErrors && errors.certificate && (
+              <p className="mt-1 text-sm text-red-400">* {errors.certificate.message}</p>
+            )}
           </div>
 
           {/* GENERAL SUGGESTIONS — ✅ Fixed: was "improvements" (conflicts with Step 6) */}

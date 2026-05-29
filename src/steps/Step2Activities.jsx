@@ -16,12 +16,14 @@ const Step2Activities = ({ onNext, shake }) => {
   const technologies = watch("technologies") || [];
   const otherTech = watch("otherTech") || "";
   const rating = watch("rating") || 0;
+  const attendanceConsistency = watch("attendanceConsistency") || 0;
   const hasTechnologies =
     (Array.isArray(technologies) && technologies.length > 0) ||
     otherTech.trim().length > 0;
 
   useEffect(() => {
     register("rating");
+    register("attendanceConsistency");
   }, [register]);
 
   return (
@@ -110,7 +112,7 @@ const Step2Activities = ({ onNext, shake }) => {
               ].map((tech) => (
                 <label key={tech} className="flex items-center gap-2">
                   <input
-                    type="checkbox"
+                    type="checkbox" className="accent-white"
                     value={tech}
                     {...register("technologies", {
                       onChange: () => clearErrors("technologies"),
@@ -149,7 +151,7 @@ const Step2Activities = ({ onNext, shake }) => {
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value="Yes"
                   {...register("support", {
                     onChange: () => clearErrors("support"),
@@ -160,7 +162,7 @@ const Step2Activities = ({ onNext, shake }) => {
 
               <label className="flex items-center gap-2">
                 <input
-                  type="radio"
+                  type="radio" className="accent-white"
                   value="No"
                   {...register("support", {
                     onChange: () => clearErrors("support"),
@@ -202,6 +204,39 @@ const Step2Activities = ({ onNext, shake }) => {
             {showErrors && errors.rating && (
               <p className="mt-1 text-sm text-red-400">
                 * {errors.rating.message}
+              </p>
+            )}
+          </div>
+
+          {/* ATTENDANCE CONSISTENCY */}
+          <div className="mb-4">
+            <label className="block mb-2 font-medium text-white">
+              How consistent were you in attending assigned internship activities?
+              <span className="text-red-400">*</span>
+            </label>
+
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  onClick={() => {
+                    setValue("attendanceConsistency", star, {
+                      shouldValidate: true,
+                    });
+                    clearErrors("attendanceConsistency");
+                  }}
+                  className={`cursor-pointer ${
+                    star <= attendanceConsistency
+                      ? "text-yellow-400"
+                      : "text-gray-500"
+                  }`}
+                  fill={star <= attendanceConsistency ? "currentColor" : "none"}
+                />
+              ))}
+            </div>
+            {showErrors && errors.attendanceConsistency && (
+              <p className="mt-1 text-sm text-red-400">
+                * {errors.attendanceConsistency.message}
               </p>
             )}
           </div>

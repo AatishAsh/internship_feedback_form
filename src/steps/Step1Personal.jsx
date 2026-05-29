@@ -409,15 +409,69 @@ const Step1Personal = ({ onNext, shake }) => {
               Internship Mode <span className="text-red-400">*</span>
             </label>
             <div className="flex flex-col gap-2">
-              {["Online", "Offline", "Hybrid"].map((m) => (
+              {["Remote", "In-office (Puducherry)", "Hybrid"].map((m) => (
                 <label key={m} className="flex items-center gap-2">
-                  <input type="radio" value={m} {...register("mode")} />
+                  <input
+                    type="radio" className="accent-white"
+                    value={m}
+                    {...register("mode")}
+                  />
                   {m}
                 </label>
               ))}
             </div>
             {showErrors && errors.mode && (
               <p className="text-sm text-red-400">* {errors.mode.message}</p>
+            )}
+          </div>
+
+          {/* INTERNSHIP LEVEL */}
+          <div className="mb-4">
+            <label className="block mb-2 font-medium">
+              Internship Level <span className="text-red-400">*</span>
+            </label>
+            <div className="flex flex-col gap-3">
+              {[
+                {
+                  value: "Pro Intern",
+                  desc: "Paid stipend, higher responsibility, production contribution",
+                },
+                {
+                  value: "Beginner Intern",
+                  desc: "Guided contribution, semi-productive",
+                },
+                {
+                  value: "Learner Intern",
+                  desc: "Unpaid, learning-focused, limited operational access",
+                },
+              ].map((level) => (
+                <label
+                  key={level.value}
+                  className="flex items-start gap-2 cursor-pointer group"
+                >
+                  <input
+                    type="radio"
+                    className="accent-white mt-1"
+                    value={level.value}
+                    {...register("internshipLevel", {
+                      onChange: () => clearErrors("internshipLevel"),
+                    })}
+                  />
+                  <div>
+                    <span className="block font-medium group-hover:text-white transition-colors">
+                      {level.value}
+                    </span>
+                    <span className="block text-xs text-gray-400 leading-relaxed">
+                      {level.desc}
+                    </span>
+                  </div>
+                </label>
+              ))}
+            </div>
+            {showErrors && errors.internshipLevel && (
+              <p className="text-sm text-red-400 mt-1">
+                * {errors.internshipLevel.message}
+              </p>
             )}
           </div>
         </div>

@@ -43,8 +43,13 @@ export default yup.object({
 
   mode: yup
     .string()
-    .oneOf(["Online", "Offline", "Hybrid"], "Please select a mode")
+    .oneOf(["Remote", "In-office (Puducherry)", "Hybrid"], "Please select a mode")
     .required("Select an internship mode"),
+
+  internshipLevel: yup
+    .string()
+    .oneOf(["Pro Intern", "Beginner Intern", "Learner Intern"], "Please select an internship level")
+    .required("Internship level is required"),
 
 
   // ================= STEP 2: Activities =================
@@ -88,6 +93,13 @@ export default yup.object({
     .max(5, "Maximum 5 stars")
     .required("Rating is required"),
 
+  attendanceConsistency: yup
+    .number()
+    .typeError("Please provide a rating")
+    .min(1, "Minimum 1 star")
+    .max(5, "Maximum 5 stars")
+    .required("Attendance consistency rating is required"),
+
 
   // ================= STEP 3: Mentorship =================
   mentorAccessibility: yup
@@ -124,12 +136,22 @@ export default yup.object({
   
   practicalKnowledge: yup.string().oneOf(["Yes", "No"]).required("Please select an option"),
   
+  industryUnderstanding: yup
+    .string()
+    .oneOf(["Yes significantly", "Somewhat", "Minimal", "No"], "Please select an option")
+    .required("Please select an option"),
+
   learningRating: yup.number().min(1).max(5).required("Learning experience rating is required"),
 
   skills: yup
     .array() // Changed to array because you used checkboxes for this in Step 4
     .min(1, "Select at least one skill")
     .required("Select at least one skill"),
+
+  growthAreas: yup
+    .array()
+    .min(1, "Select at least one area")
+    .required("Select at least one area of improvement"),
 
   careerAlignment: yup.string().oneOf(["Yes", "No", "Partially"]).required("Please select an option"),
 
@@ -144,7 +166,12 @@ export default yup.object({
   github: yup.string().oneOf(["Yes", "No"]).required("Please select an option"),
   
   taskClarity: yup.string().oneOf(["Yes", "No"]).required("Please select an option"),
-  
+
+  taskDifficulty: yup
+    .string()
+    .oneOf(["Beginner Friendly", "Moderate", "Challenging", "Very Advanced"], "Please select a difficulty level")
+    .required("Task difficulty rating is required"),
+
   taskMeaningful: yup.number().min(1).max(5).required("Task meaningfulness rating is required"),
 
   challenges: yup
@@ -167,11 +194,15 @@ export default yup.object({
     .trim()
     .min(5, "Write at least 5 characters"),
 
-  improvements: yup // Step 6 improvements
+  improvementAreas: yup
+    .array()
+    .min(1, "Select at least one area for improvement")
+    .required("Select at least one area for improvement"),
+
+  improvements: yup // Step 6 improvements - now optional detailed feedback
     .string()
-    .required("Please suggest improvements")
-    .trim()
-    .min(5, "Write at least 5 characters"),
+    .optional()
+    .trim(),
 
   joinFuture: yup.string().oneOf(["Yes", "No", "Maybe"]).required("Please select an option"),
   
