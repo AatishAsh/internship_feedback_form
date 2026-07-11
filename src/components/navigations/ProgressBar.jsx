@@ -22,10 +22,10 @@ const ProgressBar = ({ currentStep, setStep }) => {
               className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full text-sm font-semibold transition-colors
               ${
                 isCompleted
-                  ? "bg-[#4c1d95] shadow-[0_0_10px_rgba(139,92,246,0.75),0_0_22px_rgba(139,92,246,0.9)] transition-shadow duration-300 text-white cursor-pointer"
+                  ? "bg-[#2F3B5E] shadow-[0_0_10px_rgba(47,59,94,0.75),0_0_22px_rgba(47,59,94,0.9)] transition-shadow duration-300 text-white cursor-pointer"
                   : isActive
-                    ? "bg-[#8b5cf6] border border-[#a78bfa] shadow-[0_0_8px_rgba(139,92,246,0.7),0_0_18px_rgba(139,92,246,0.85)] text-white cursor-pointer"
-                    : "bg-gray-200 text-gray-500"
+                    ? "bg-[#4E63A0] border border-[#7e95d4] shadow-[0_0_8px_rgba(78,99,160,0.7),0_0_18px_rgba(78,99,160,0.85)] text-white cursor-pointer"
+                    : "bg-gray-800 text-gray-500 border border-gray-700/50"
               }
              `}
             >
@@ -38,8 +38,8 @@ const ProgressBar = ({ currentStep, setStep }) => {
                 className={`w-6 sm:w-10 md:w-12 h-0.5 mx-1 transition-colors
                   ${
                     step < currentStep
-                      ? "bg-linear-to-r from-[#8b5cf6] to-[#4c1d95]"
-                      : "bg-gray-700"
+                      ? "bg-linear-to-r from-[#2F3B5E] to-[#4E63A0]"
+                      : "bg-gray-800"
                   }
                 `}
               />

@@ -179,6 +179,17 @@ select option {
   }
 }
 
+/* Remove highlights/outlines when form fields are focused */
+input:focus,
+textarea:focus,
+select:focus,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Custom styled checkbox and radio buttons to fix mobile visibility issues (white-on-white) */
 input[type="checkbox"].accent-white,
 input[type="radio"].accent-white {
@@ -188,6 +199,9 @@ input[type="radio"].accent-white {
   border: 2px solid rgba(255, 255, 255, 0.4);
   width: 1.15em;
   height: 1.15em;
+  min-width: 1.15em;
+  min-height: 1.15em;
+  flex-shrink: 0;
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;

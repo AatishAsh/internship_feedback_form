@@ -220,7 +220,7 @@ const Step9TC = ({ onNext, shake, isSubmitting }) => {
                 <input
                   type="checkbox"
                   id="tc-agree"
-                  className="w-5 h-5 accent-white cursor-pointer"
+                  className="w-5 h-5 shrink-0 accent-white cursor-pointer"
                   {...register("agreedToTerms", {
                     onChange: () => clearErrors("agreedToTerms")
                   })}
